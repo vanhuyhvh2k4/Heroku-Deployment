@@ -1,10 +1,23 @@
 const Product = require('../models/product.model');
 
-// Get all products
+// Get all products and handle search
 exports.getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find();
-        res.render('products/index', { products });
+        const searchQuery = req.query.search || '';
+        const searchRegex = new RegExp(searchQuery, 'i');
+
+        const products = await Product.find({
+            $or: [
+                { name: searchRegex },
+                { category: searchRegex },
+                { description: searchRegex }
+            ]
+        });
+
+        res.render('products/index', { 
+            products,
+            searchQuery
+        });
     } catch (error) {
         res.status(500).render('error', { error });
     }
