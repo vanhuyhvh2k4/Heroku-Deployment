@@ -9,8 +9,22 @@
 <body>
     <div class="container mt-4">
         <h1>Product List</h1>
-        <a href="/products/create" class="btn btn-primary mb-3">Add New Product</a>
         
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <form action="/products" method="GET" class="d-flex">
+                    <input type="text" name="search" class="form-control me-2" placeholder="Search products..." value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>">
+                    <button type="submit" class="btn btn-outline-primary">Search</button>
+                    <% if (typeof searchQuery !== 'undefined' && searchQuery) { %>
+                        <a href="/products" class="btn btn-outline-secondary ms-2">Clear</a>
+                    <% } %>
+                </form>
+            </div>
+            <div class="col-md-6 text-end">
+                <a href="/products/create" class="btn btn-primary">Add New Product</a>
+            </div>
+        </div>
+
         <table class="table">
             <thead>
                 <tr>
