@@ -1,11 +1,14 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const path = require('path');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const connectDB = require('./config/database');
 require('dotenv').config();
 
 const app = express();
+
+// Connect to MongoDB
+connectDB();
 
 // Middleware
 app.use(morgan('dev'));
@@ -18,14 +21,6 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
-
-// Database connection
-mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => console.log('MongoDB Connected'))
-.catch(err => console.log('MongoDB Connection Error:', err));
 
 // Routes
 const productRoutes = require('./routes/product.routes');
